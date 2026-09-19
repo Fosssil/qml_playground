@@ -1,4 +1,4 @@
-//  Create a heat index display (`text`) that combines `celsius` and `humidity` using the formula: heatIndex = celsius + 0.555 * (6.11 * 10^(7.5 * celsius / (237.7 + celsius)) - 10) * humidity / 100. (Approximate is fine.)
+//  Add a `readonly property string temperatureCategory` that uses a binding (not imperative code) to return one of "freezing", "cold", "mild", "warm", "hot" based on `celsius`. Use this property in multiple binding expressions across the UI.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
@@ -7,6 +7,22 @@ Window {
     // Source of truth
     property real celsius: 20
     property real humidity: 50
+    readonly property string temperatureCategory: {
+		// Exercise 3 code here
+        if (celsius > 35)
+            return "hot";
+
+        if (celsius > 25)
+            return "warm";
+
+        if (celsius > 10)
+            return "mild";
+
+        if (celsius > 0)
+            return "cold";
+
+        return "freezing";
+    }
 
     width: 400
     height: 300
@@ -142,6 +158,35 @@ Window {
             font.pixelSize: 30
             font.bold: true
             color: "black"
+        }
+
+        Rectangle {
+			// Exercise 3 Code starts from here
+            border.width: 1
+            border.color: "black"
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: 100
+            height: 50
+            radius: 5
+
+            Text {
+                text: temperatureCategory
+                anchors.centerIn: parent
+                font.pixelSize: 20
+                color: {
+                    if (temperatureCategory === "hot")
+                        return "red";
+                    else if (temperatureCategory === "warm")
+                        return "orange";
+                    else if (temperatureCategory === "mild")
+                        return "lightpink";
+                    else if (temperatureCategory === "cold")
+                        return "skyblue";
+                    else
+                        return "dodgerblue";
+                }
+            }
+
         }
 
     }
